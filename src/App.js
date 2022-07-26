@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import ContactsList from './components/ContactsList';
 import ContactsAdd from './components/ContactsAdd';
 import ContactsView from './components/ContactsView';
 import './styles/styles.css';
+import ContactsEdit from './components/ContactsEdit';
 
 export default function App() {
   return (
@@ -23,6 +23,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<ContactsList />} />
           <Route path="/contacts/add" element={<ContactsAdd />} />
+          <Route path="/contacts/edit/:id" element={<ContactsEdit />} />
           <Route path="/contacts/:id" element={<ContactsView />} />
         </Routes>
       </main>
