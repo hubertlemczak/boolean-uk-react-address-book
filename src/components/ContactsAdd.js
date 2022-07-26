@@ -12,11 +12,8 @@ const initialAddContactFormFields = {
   twitter: '',
 };
 
-function ContactsAdd(props) {
-  // setContacts and contacts must be passed as props
-  // to this component so new contacts can be added to the
-  // state
-  const { setNewContact } = useContacts();
+function ContactsAdd() {
+  const { postFetchCreateContact } = useContacts();
   const [addContactFormFields, setAddContactFormFields] = useState(
     initialAddContactFormFields
   );
@@ -30,7 +27,7 @@ function ContactsAdd(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setNewContact(addContactFormFields);
+    postFetchCreateContact(addContactFormFields);
     setAddContactFormFields(initialAddContactFormFields);
     navigate('/');
   };

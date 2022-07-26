@@ -11,7 +11,7 @@ const initialUpdateContactFormFields = {
   twitter: '',
 };
 function ContactsEdit() {
-  const { setUpdatedContact } = useContacts();
+  const { patchFetchUpdateContact } = useContacts();
   const [updateContactFormFields, setUpdateContactFormFields] = useState(
     initialUpdateContactFormFields
   );
@@ -20,18 +20,19 @@ function ContactsEdit() {
 
   const { id } = useParams();
 
-  const getFetchContact = () => {
-    fetch(`http://localhost:4000/contacts/${id}`)
-      .then((res) => res.json())
-      .then((data) =>
-        setUpdateContactFormFields((currentForm) => ({
-          ...currentForm,
-          ...data,
-        }))
-      )
-      .catch((err) => console.log(err.code));
-  };
-  useEffect(getFetchContact, [id]);
+  useEffect(function getFetchContact() {
+      fetch(`http://localhost:4000/contacts/${id}`)
+        .then((res) => res.json())
+        .then((data) =>
+          setUpdateContactFormFields((currentForm) => ({
+            ...currentForm,
+            ...data,
+          }))
+        )
+        .catch((err) => console.log(err.code));
+    },
+    [id]
+  );
 
   const changeHandler = (e) => {
     const { name, value } = e.target;
@@ -40,7 +41,7 @@ function ContactsEdit() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setUpdatedContact(updateContactFormFields);
+    patchFetchUpdateContact(updateContactFormFields);
     setUpdateContactFormFields(initialUpdateContactFormFields);
     navigate('/');
   };

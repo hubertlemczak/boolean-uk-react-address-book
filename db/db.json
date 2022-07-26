@@ -23,6 +23,16 @@
       "linkedIn": "asd",
       "twitter": "asdasd",
       "id": 4
+    },
+    {
+      "firstName": "Hubert",
+      "lastName": "Lemczak",
+      "street": "41",
+      "city": "HARROW",
+      "email": "hubertlemczak@gmail.com",
+      "linkedIn": "123123",
+      "twitter": "123123asdasdasd",
+      "id": 5
     }
   ],
   "meetings": []
