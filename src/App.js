@@ -6,6 +6,7 @@ import './styles/styles.css';
 import ContactsEdit from './components/ContactsEdit';
 import { NavBar } from './components/NavBar';
 import { MeetingList } from './components/MeetingList';
+import MeetingAdd from './components/MeetingAdd';
 
 export default function App() {
   return (
@@ -17,7 +18,14 @@ export default function App() {
           <Route path="/contacts/add" element={<ContactsAdd />} />
           <Route path="/contacts/edit/:id" element={<ContactsEdit />} />
           <Route path="/contacts/:id" element={<ContactsView />} />
-          <Route path="/contacts/:id/meetings" element={<MeetingList />} />
+          <Route
+            path="/contacts/:contactId/meetings"
+            element={<MeetingList />}
+          />
+          <Route
+            path="/contacts/:id/meetings/add-meeting"
+            element={<MeetingAdd />}
+          />
         </Routes>
       </main>
     </>

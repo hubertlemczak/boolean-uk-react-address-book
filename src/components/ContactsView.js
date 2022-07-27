@@ -3,15 +3,17 @@ import { useParams } from 'react-router-dom';
 
 import { ReactComponent as LinkedInSVG } from '../assets/linkedin.svg';
 import { ReactComponent as TwitterSVG } from '../assets/twitter.svg';
+import { useContacts } from '../context/ContactsContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
 function ContactsView() {
-  const [contact, setContact] = useState(false);
+  const { contact, setContact } = useContacts();
   const [isFetchingContact, setIsFetchingContact] = useState(false);
 
   const { id } = useParams();
 
-  useEffect(function getFetchContact() {
+  useEffect(
+    function getFetchContact() {
       setIsFetchingContact(true);
       fetch(`http://localhost:4000/contacts/${id}`)
         .then((res) => res.json())
@@ -19,7 +21,7 @@ function ContactsView() {
         .then(() => setIsFetchingContact(false))
         .catch((err) => console.log(err.code));
     },
-    [id]
+    [id, setContact]
   );
 
   if (isFetchingContact) {

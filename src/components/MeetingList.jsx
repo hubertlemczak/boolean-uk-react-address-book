@@ -1,51 +1,63 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
 export const MeetingList = () => {
-  const [contact, setContact] = useState(false);
   const [meetings, setMeetings] = useState([]);
-  const [isFetchingContact, setIsFetchingContact] = useState(false);
   const [isFetchingMeetings, setIsFetchingMeetings] = useState(false);
-  const { state } = useLocation();
 
-  useEffect(function getFetchContact() {
-      setIsFetchingContact(true);
-      fetch(`http://localhost:4000/contacts/${state}`)
-        .then((res) => res.json())
-        .then((data) => setContact(data))
-        .then(() => setIsFetchingContact(false))
-        .catch((err) => console.log(err.code));
-    },
-    [state]
-  );
+  const { contactId } = useParams();
+  console.log(useParams());
 
-  useEffect(function getFetchMeetings() {
+  useEffect(
+    function getFetchMeetings() {
       setIsFetchingMeetings(true);
-      fetch(`http://localhost:4000/meetings?userId=${state}`)
+      fetch(`http://localhost:4000/meetings?contactId=${contactId}`)
         .then((res) => res.json())
         .then((data) => setMeetings(data))
         .then(() => setIsFetchingMeetings(false))
         .catch((err) => console.log(err.code));
     },
-    [state]
+    [contactId]
   );
-
-  console.log(meetings);
 
   return (
     <div>
-      {isFetchingContact ? (
-        <LoadingSpinner />
-      ) : (
-        <h2>
-          {contact.firstName} {contact.lastName}
-        </h2>
-      )}
+      <h2>Meetings</h2>
+
+      <Link
+        to={`/contacts/${contactId}/meetings/add-meeting`}
+        className="add-new-meetings"
+      >
+        Add New Meetings
+      </Link>
+
       {isFetchingMeetings ? (
         <LoadingSpinner />
       ) : (
-        meetings.map((meeting) => <p key={meeting.id}>{meeting.id}</p>)
+        <ul className="meetings-container">
+          {meetings.map((meeting) => (
+            <li key={meeting.id} className="meeting">
+              <p>
+                Date: {meeting.date} at {meeting.time}
+              </p>
+              <p>Description: {meeting.description}</p>
+              <p>Location: {meeting.meetingLocation}</p>
+              {meeting.meetingLink && (
+                <p>
+                  Link:{' '}
+                  <a
+                    href={meeting.meetingLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {meeting.meetingLink}
+                  </a>
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

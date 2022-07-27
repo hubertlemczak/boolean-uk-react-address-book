@@ -37,7 +37,7 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  padding:10px;
+  padding: 10px;
 }
 
 /* Make images easier to work with */
@@ -150,4 +150,18 @@ h2 {
 
 .address-card h2 {
   font-size: 1.15rem;
+}
+
+.meetings-container {
+  display: grid;
+  grid-template-columns: repeat(3, 250px);
+}
+
+.meeting {
+  margin-bottom: 30px;
+}
+
+.add-new-meetings {
+  display: block;
+  margin: 20px 0;
 }

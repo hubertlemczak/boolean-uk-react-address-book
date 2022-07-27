@@ -4,13 +4,16 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
 import { ContactsContextProvider } from './context/ContactsContext';
+import { MeetingsContextProvider } from './context/MeetingsContext';
 
 const rootElement = document.getElementById('root');
 ReactDOM.render(
   <BrowserRouter>
     <StrictMode>
       <ContactsContextProvider>
-        <App />
+        <MeetingsContextProvider>
+          <App />
+        </MeetingsContextProvider>
       </ContactsContextProvider>
     </StrictMode>
   </BrowserRouter>,

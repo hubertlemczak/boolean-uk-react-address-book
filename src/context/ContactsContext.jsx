@@ -1,12 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const ContactsContext = createContext();
 export const useContacts = () => useContext(ContactsContext);
 
 export const ContactsContextProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
+  const [contact, setContact] = useState(false);
   const [isFetchingContacts, setIsFetchingContacts] = useState(false);
-
+  console.log('params', useParams());
   useEffect(function getFetchAllContacts() {
     setIsFetchingContacts(true);
     fetch('http://localhost:4000/contacts')
@@ -58,6 +60,8 @@ export const ContactsContextProvider = ({ children }) => {
       value={{
         contacts,
         setContacts,
+        contact,
+        setContact,
         deleteContact,
         isFetchingContacts,
         postFetchCreateContact,
