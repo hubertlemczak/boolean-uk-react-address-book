@@ -62,6 +62,7 @@ export const ContactsContextProvider = ({ children }) => {
         setContact,
         deleteContact,
         isFetchingContacts,
+        setIsFetchingContacts,
         postFetchCreateContact,
         patchFetchUpdateContact,
       }}
