@@ -7,19 +7,20 @@ import LoadingSpinner from './spinner/LoadingSpinner';
 
 function ContactsView() {
   const [contact, setContact] = useState(false);
-  const [isFetchingContact, seIsFetchingContact] = useState(false);
+  const [isFetchingContact, setIsFetchingContact] = useState(false);
 
   const { id } = useParams();
 
-  const getFetchContact = () => {
-    seIsFetchingContact(true);
-    fetch(`http://localhost:4000/contacts/${id}`)
-      .then((res) => res.json())
-      .then((data) => setContact(data))
-      .then(() => seIsFetchingContact(false))
-      .catch((err) => console.log(err.code));
-  };
-  useEffect(getFetchContact, [id]);
+  useEffect(function getFetchContact() {
+      setIsFetchingContact(true);
+      fetch(`http://localhost:4000/contacts/${id}`)
+        .then((res) => res.json())
+        .then((data) => setContact(data))
+        .then(() => setIsFetchingContact(false))
+        .catch((err) => console.log(err.code));
+    },
+    [id]
+  );
 
   if (isFetchingContact) {
     return <LoadingSpinner />;

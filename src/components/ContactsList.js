@@ -22,7 +22,9 @@ function ContactsList() {
                 </p>
                 <p>
                   <Link to={`/contacts/edit/${contact.id}`}>Edit</Link>
-                  <Link to={`/contacts/${contact.id}`}>View</Link>
+                  <Link to={`/contacts/${contact.id}`} state={contact.id}>
+                    View
+                  </Link>
                   <button onClick={() => deleteContact(contact.id)}>
                     Delete
                   </button>

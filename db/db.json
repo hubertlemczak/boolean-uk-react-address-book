@@ -35,5 +35,18 @@
       "id": 5
     }
   ],
-  "meetings": []
+  "meetings": [
+    {
+      "id": 1,
+      "userId": 5
+    },
+    {
+      "id": 2,
+      "userId": 4
+    },
+    {
+      "id": 3,
+      "userId": 5
+    }
+  ]
 }
