@@ -14,11 +14,13 @@ function ContactsList() {
     setContacts,
   } = useContacts();
   const [, setSearchParams] = useSearchParams();
-  const [searchParamsState, setSearchParamsState] = useState([]);
+  const [filterFormFields, setFilterFormFields] = useState({
+    personal: false,
+    work: false,
+  });
   const { search } = useLocation();
 
   useEffect(function getFetchAllContacts() {
-      if (search === '') setSearchParamsState([]);
       setIsFetchingContacts(true);
       fetch(`http://localhost:4000/contacts${search}`)
         .then((res) => res.json())
@@ -30,20 +32,20 @@ function ContactsList() {
   );
 
   const changeHandler = (e) => {
-    const value = e.target.value;
-    const isChecked = e.target.checked;
-    if (isChecked && !searchParamsState.includes(value)) {
-      setSearchParamsState((currParams) => [...currParams, value]);
-    } else {
-      setSearchParamsState(() =>
-        searchParamsState.filter((param) => param !== value)
-      );
-    }
+    const { value, checked } = e.target;
+    setFilterFormFields((currFields) => {
+      return { ...currFields, [value]: checked };
+    });
   };
 
-  useEffect(() => {
-    setSearchParams({ type: searchParamsState });
-  }, [searchParamsState, setSearchParams]);
+  const formChangeHandler = (e) => {
+    e.preventDefault();
+    const type = [];
+    for (let i = 0; i < 2; i++) {
+      if (e.target[i].checked) type.push(e.target[i].value);
+    }
+    setSearchParams({ type });
+  };
 
   return (
     <>
@@ -54,14 +56,14 @@ function ContactsList() {
         <LoadingSpinner />
       ) : (
         <>
-          <form>
+          <form onSubmit={formChangeHandler}>
             <label htmlFor="workFilter">Work </label>
             <input
               id="workFilter"
               type="checkbox"
               value="work"
               onChange={changeHandler}
-              checked={searchParamsState.includes('work')}
+              checked={filterFormFields['work']}
             />
 
             <label htmlFor="personalFilter">Personal </label>
@@ -70,8 +72,9 @@ function ContactsList() {
               type="checkbox"
               value="personal"
               onChange={changeHandler}
-              checked={searchParamsState.includes('personal')}
+              checked={filterFormFields['personal']}
             />
+            <button>Apply Filters</button>
           </form>
           <ul className="contacts-list">
             {contacts.map((contact, index) => {
