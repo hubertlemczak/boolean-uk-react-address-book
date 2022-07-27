@@ -23,7 +23,7 @@ export default function App() {
             element={<MeetingList />}
           />
           <Route
-            path="/contacts/:id/meetings/add-meeting"
+            path="/contacts/:contactId/meetings/add-meeting"
             element={<MeetingAdd />}
           />
         </Routes>

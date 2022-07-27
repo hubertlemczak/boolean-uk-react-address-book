@@ -18,6 +18,7 @@ export const MeetingsContextProvider = ({ children }) => {
   }, []);
 
   const postFetchCreateMeeting = (newMeeting) => {
+    console.log('newMeeting', newMeeting);
     fetch('http://localhost:4000/meetings', {
       method: 'POST',
       headers: {

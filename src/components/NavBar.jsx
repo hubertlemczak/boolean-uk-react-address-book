@@ -4,8 +4,6 @@ import { useContacts } from '../context/ContactsContext';
 export const NavBar = () => {
   const { pathname } = useLocation();
   const { contact } = useContacts();
-  console.log('contact', contact);
-  // \/contacts\/\d{1,999}
   return (
     <nav>
       <h2>Menu</h2>

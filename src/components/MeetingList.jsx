@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useMeetings } from '../context/MeetingsContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
 export const MeetingList = () => {
-  const [meetings, setMeetings] = useState([]);
+  const { meetings, setMeetings } = useMeetings();
   const [isFetchingMeetings, setIsFetchingMeetings] = useState(false);
 
   const { contactId } = useParams();
-  console.log(useParams());
 
   useEffect(
     function getFetchMeetings() {
@@ -18,7 +18,7 @@ export const MeetingList = () => {
         .then(() => setIsFetchingMeetings(false))
         .catch((err) => console.log(err.code));
     },
-    [contactId]
+    [contactId, setMeetings]
   );
 
   return (

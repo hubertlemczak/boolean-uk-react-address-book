@@ -9,6 +9,7 @@ const initialUpdateContactFormFields = {
   email: '',
   linkedIn: '',
   twitter: '',
+  type: '',
 };
 function ContactsEdit() {
   const { patchFetchUpdateContact } = useContacts();
@@ -20,7 +21,8 @@ function ContactsEdit() {
 
   const { id } = useParams();
 
-  useEffect(function getFetchContact() {
+  useEffect(
+    function getFetchContact() {
       fetch(`http://localhost:4000/contacts/${id}`)
         .then((res) => res.json())
         .then((data) =>
@@ -119,6 +121,19 @@ function ContactsEdit() {
         onChange={changeHandler}
         required
       />
+
+      <label htmlFor="type">Type:</label>
+      <select
+        value={updateContactFormFields.type}
+        id="type"
+        name="type"
+        onChange={changeHandler}
+        required
+      >
+        <option value="" disabled></option>
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+      </select>
 
       <div className="actions-section">
         <button className="button blue" type="submit">

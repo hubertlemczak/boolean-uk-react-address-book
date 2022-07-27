@@ -97,11 +97,11 @@ h2 {
 }
 
 .contacts-list {
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .contacts-list > li {
-  padding: 1rem 0;
+  padding: 1rem 1rem;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 1rem;
@@ -164,4 +164,9 @@ h2 {
 .add-new-meetings {
   display: block;
   margin: 20px 0;
+}
+
+.type-svg {
+  width: 24px;
+  height: 24px;
 }

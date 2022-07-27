@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useContacts } from '../context/ContactsContext';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useMeetings } from '../context/MeetingsContext';
 
 const initialAddMeetingFormFields = {
@@ -13,10 +12,11 @@ const initialAddMeetingFormFields = {
 
 function MeetingAdd() {
   const { postFetchCreateMeeting } = useMeetings();
-  const { contact } = useContacts();
   const [addMeetingFormFields, setAddMeetingFormFields] = useState(
     initialAddMeetingFormFields
   );
+
+  const { contactId } = useParams();
 
   const navigate = useNavigate();
 
@@ -27,9 +27,9 @@ function MeetingAdd() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    postFetchCreateMeeting({ ...addMeetingFormFields, contactId: contact.id });
+    postFetchCreateMeeting({ ...addMeetingFormFields, contactId: contactId });
     setAddMeetingFormFields(initialAddMeetingFormFields);
-    navigate(-1);
+    navigate(`/contacts/${contactId}/meetings`);
   };
 
   return (

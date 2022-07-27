@@ -10,6 +10,7 @@ const initialAddContactFormFields = {
   email: '',
   linkedIn: '',
   twitter: '',
+  type: '',
 };
 
 function ContactsAdd() {
@@ -107,6 +108,19 @@ function ContactsAdd() {
         onChange={changeHandler}
         required
       />
+
+      <label htmlFor="type">Type:</label>
+      <select
+        value={addContactFormFields.type}
+        id="type"
+        name="type"
+        onChange={changeHandler}
+        required
+      >
+        <option value="" disabled></option>
+        <option value="personal">Personal</option>
+        <option value="work">Work</option>
+      </select>
 
       <div className="actions-section">
         <button className="button blue" type="submit">

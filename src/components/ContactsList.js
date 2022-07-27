@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useContacts } from '../context/ContactsContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
+import { ReactComponent as UserSVG } from '../assets/user.svg';
+import { ReactComponent as BriefcaseSVG } from '../assets/briefcase.svg';
 
 function ContactsList() {
   const { contacts, deleteContact, isFetchingContacts } = useContacts();
@@ -20,7 +22,12 @@ function ContactsList() {
                 <p>
                   {firstName} {lastName}
                 </p>
-                <p>
+                {contact.type === 'personal' ? (
+                  <UserSVG className="type-svg" />
+                ) : (
+                  <BriefcaseSVG className="type-svg" />
+                )}
+                <p style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                   <Link to={`/contacts/edit/${contact.id}`}>Edit</Link>
                   <Link to={`/contacts/${contact.id}`}>View</Link>
                   <button onClick={() => deleteContact(contact.id)}>
