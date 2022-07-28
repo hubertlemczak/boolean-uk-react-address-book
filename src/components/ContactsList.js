@@ -19,7 +19,8 @@ function ContactsList() {
     work: false,
   });
 
-  useEffect(function getFetchAllContacts() {
+  useEffect(
+    function getFetchAllContacts() {
       setIsFetchingContacts(true);
       fetch(`http://localhost:4000/contacts?${searchParams.toString()}`)
         .then((res) => res.json())
@@ -46,6 +47,11 @@ function ContactsList() {
     }
     setSearchParams({ type });
   }, [filterFormFields, setSearchParams]);
+
+  const contactType = {
+    work: <BriefcaseSVG className="type-svg" />,
+    personal: <UserSVG className="type-svg" />,
+  };
 
   return (
     <>
@@ -83,11 +89,7 @@ function ContactsList() {
                   <p>
                     {firstName} {lastName}
                   </p>
-                  {contact.type === 'personal' ? (
-                    <UserSVG className="type-svg" />
-                  ) : (
-                    <BriefcaseSVG className="type-svg" />
-                  )}
+                  {contactType[contact.type]}
                   <p style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                     <Link to={`/contacts/edit/${contact.id}`}>Edit</Link>
                     <Link to={`/contacts/${contact.id}`}>View</Link>
