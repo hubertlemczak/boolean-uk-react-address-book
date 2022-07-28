@@ -9,8 +9,7 @@ export const MeetingList = () => {
 
   const { contactId } = useParams();
 
-  useEffect(
-    function getFetchMeetings() {
+  useEffect(function getFetchMeetings() {
       setIsFetchingMeetings(true);
       fetch(`http://localhost:4000/meetings?contactId=${contactId}`)
         .then((res) => res.json())

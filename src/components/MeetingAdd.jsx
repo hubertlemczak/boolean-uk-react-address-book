@@ -12,12 +12,9 @@ const initialAddMeetingFormFields = {
 
 function MeetingAdd() {
   const { postFetchCreateMeeting } = useMeetings();
-  const [addMeetingFormFields, setAddMeetingFormFields] = useState(
-    initialAddMeetingFormFields
-  );
+  const [addMeetingFormFields, setAddMeetingFormFields] = useState(initialAddMeetingFormFields);
 
   const { contactId } = useParams();
-
   const navigate = useNavigate();
 
   const changeHandler = (e) => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useContacts } from '../context/ContactsContext';
+
 const initialUpdateContactFormFields = {
   firstName: '',
   lastName: '',
@@ -11,18 +12,15 @@ const initialUpdateContactFormFields = {
   twitter: '',
   type: '',
 };
+
 function ContactsEdit() {
   const { patchFetchUpdateContact } = useContacts();
-  const [updateContactFormFields, setUpdateContactFormFields] = useState(
-    initialUpdateContactFormFields
-  );
+  const [updateContactFormFields, setUpdateContactFormFields] = useState(initialUpdateContactFormFields);
 
   const navigate = useNavigate();
-
   const { id } = useParams();
 
-  useEffect(
-    function getFetchContact() {
+  useEffect(function getFetchContact() {
       fetch(`http://localhost:4000/contacts/${id}`)
         .then((res) => res.json())
         .then((data) =>

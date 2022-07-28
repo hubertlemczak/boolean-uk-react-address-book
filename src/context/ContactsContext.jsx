@@ -7,6 +7,7 @@ export const ContactsContextProvider = ({ children }) => {
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState(false);
   const [isFetchingContacts, setIsFetchingContacts] = useState(false);
+
   useEffect(function getFetchAllContacts() {
     setIsFetchingContacts(true);
     fetch('http://localhost:4000/contacts')

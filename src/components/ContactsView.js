@@ -12,8 +12,7 @@ function ContactsView() {
 
   const { id } = useParams();
 
-  useEffect(
-    function getFetchContact() {
+  useEffect(function getFetchContact() {
       setIsFetchingContact(true);
       fetch(`http://localhost:4000/contacts/${id}`)
         .then((res) => res.json())
@@ -24,27 +23,29 @@ function ContactsView() {
     [id, setContact]
   );
 
-  if (isFetchingContact) {
-    return <LoadingSpinner />;
-  }
-
   return (
-    <div>
-      <h2>
-        {contact.firstName} {contact.lastName}
-      </h2>
-      <p>
-        {contact.street} {contact.city}
-      </p>
-      <p>{contact.email}</p>
-      <a href={contact.linkedIn} target="_blank" rel="noreferrer">
-        <LinkedInSVG style={{ width: 30, height: 30 }} />
-      </a>
-      <a href={contact.twitter} target="_blank" rel="noreferrer">
-        <TwitterSVG style={{ width: 30, height: 30 }} />
-      </a>
-      <p></p>
-    </div>
+    <>
+      {isFetchingContact ? (
+        <LoadingSpinner />
+      ) : (
+        <div>
+          <h2>
+            {contact.firstName} {contact.lastName}
+          </h2>
+          <p>
+            {contact.street} {contact.city}
+          </p>
+          <p>{contact.email}</p>
+          <a href={contact.linkedIn} target="_blank" rel="noreferrer">
+            <LinkedInSVG style={{ width: 30, height: 30 }} />
+          </a>
+          <a href={contact.twitter} target="_blank" rel="noreferrer">
+            <TwitterSVG style={{ width: 30, height: 30 }} />
+          </a>
+          <p></p>
+        </div>
+      )}
+    </>
   );
 }
 

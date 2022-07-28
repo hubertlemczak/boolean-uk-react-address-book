@@ -1,26 +1,21 @@
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useContacts } from '../context/ContactsContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
 import { ReactComponent as UserSVG } from '../assets/user.svg';
 import { ReactComponent as BriefcaseSVG } from '../assets/briefcase.svg';
 import { useEffect, useState } from 'react';
 
-function ContactsList() {
-  const {
-    contacts,
-    deleteContact,
-    isFetchingContacts,
-    setIsFetchingContacts,
-    setContacts,
-  } = useContacts();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [filterFormFields, setFilterFormFields] = useState({
-    personal: false,
-    work: false,
-  });
+const initialFilterFormFields = {
+  personal: false,
+  work: false,
+}
 
-  useEffect(
-    function getFetchAllContacts() {
+function ContactsList() {
+  const { contacts, deleteContact, isFetchingContacts, setIsFetchingContacts, setContacts, } = useContacts();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [filterFormFields, setFilterFormFields] = useState(initialFilterFormFields);
+
+  useEffect(function getFetchAllContacts() {
       setIsFetchingContacts(true);
       fetch(`http://localhost:4000/contacts?${searchParams.toString()}`)
         .then((res) => res.json())

@@ -32,8 +32,6 @@ function ContactsAdd() {
     setAddContactFormFields(initialAddContactFormFields);
     navigate('/');
   };
-  //TODO: Implement controlled form
-  //send POST to json server on form submit
 
   return (
     <form className="form-stack contact-form" onSubmit={submitHandler}>

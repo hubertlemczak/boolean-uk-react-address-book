@@ -4,6 +4,7 @@ import { useContacts } from '../context/ContactsContext';
 export const NavBar = () => {
   const { pathname } = useLocation();
   const { contact } = useContacts();
+
   return (
     <nav>
       <h2>Menu</h2>
@@ -14,7 +15,7 @@ export const NavBar = () => {
         <li>
           <Link to="contacts/add">Add New Contact</Link>
         </li>
-        {pathname.match(/\/contacts\/\d{1,999}/) && (
+        {pathname.match(/\/contacts\/\d{1,99}/) && (
           <>
             <li>
               <Link to={`/contacts/${contact.id}/meetings`}>Meetings</Link>
