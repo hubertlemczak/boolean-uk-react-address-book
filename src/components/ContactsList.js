@@ -13,22 +13,23 @@ function ContactsList() {
     setIsFetchingContacts,
     setContacts,
   } = useContacts();
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filterFormFields, setFilterFormFields] = useState({
     personal: false,
     work: false,
   });
-  const { search } = useLocation();
 
   useEffect(function getFetchAllContacts() {
       setIsFetchingContacts(true);
-      fetch(`http://localhost:4000/contacts${search}`)
+      fetch(`http://localhost:4000/contacts?${searchParams.toString()}`)
         .then((res) => res.json())
-        .then((data) => setContacts(data))
-        .then(() => setIsFetchingContacts(false))
+        .then((data) => {
+          setContacts(data);
+          setIsFetchingContacts(false);
+        })
         .catch((err) => console.log(err.code));
     },
-    [search, setContacts, setIsFetchingContacts]
+    [searchParams]
   );
 
   const changeHandler = (e) => {
@@ -38,14 +39,13 @@ function ContactsList() {
     });
   };
 
-  const formChangeHandler = (e) => {
-    e.preventDefault();
+  useEffect(() => {
     const type = [];
-    for (let i = 0; i < 2; i++) {
-      if (e.target[i].checked) type.push(e.target[i].value);
+    for (let filter in filterFormFields) {
+      if (filterFormFields[filter]) type.push(filter);
     }
     setSearchParams({ type });
-  };
+  }, [filterFormFields, setSearchParams]);
 
   return (
     <>
@@ -56,7 +56,7 @@ function ContactsList() {
         <LoadingSpinner />
       ) : (
         <>
-          <form onSubmit={formChangeHandler}>
+          <form>
             <label htmlFor="workFilter">Work </label>
             <input
               id="workFilter"
@@ -74,7 +74,6 @@ function ContactsList() {
               onChange={changeHandler}
               checked={filterFormFields['personal']}
             />
-            <button>Apply Filters</button>
           </form>
           <ul className="contacts-list">
             {contacts.map((contact, index) => {
