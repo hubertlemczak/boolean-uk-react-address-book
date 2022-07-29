@@ -1,4 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useGlobalDispatch, useGlobalState } from './RootContext';
+import ACTION_TYPES from '../action/actionTypes';
 
 const ContactsContext = createContext();
 export const useContacts = () => useContext(ContactsContext);
@@ -8,14 +10,9 @@ export const ContactsContextProvider = ({ children }) => {
   const [contact, setContact] = useState(false);
   const [isFetchingContacts, setIsFetchingContacts] = useState(false);
 
-  useEffect(function getFetchAllContacts() {
-    setIsFetchingContacts(true);
-    fetch('http://localhost:4000/contacts')
-      .then((res) => res.json())
-      .then((data) => setContacts(data))
-      .then(() => setIsFetchingContacts(false))
-      .catch((err) => console.log(err.code));
-  }, []);
+  const state = useGlobalState();
+  const dispatch = useGlobalDispatch();
+  console.log(state);
 
   const postFetchCreateContact = (newContact) => {
     fetch('http://localhost:4000/contacts', {
@@ -26,7 +23,10 @@ export const ContactsContextProvider = ({ children }) => {
       body: JSON.stringify(newContact),
     })
       .then((res) => res.json())
-      .then((data) => setContacts((currContacts) => [...currContacts, data]))
+      .then((data) => {
+        setContacts((currContacts) => [...currContacts, data]);
+        return data;
+      })
       .catch((err) => console.log(err.code));
   };
 

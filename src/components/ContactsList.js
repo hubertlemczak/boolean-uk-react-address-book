@@ -1,36 +1,48 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { useContacts } from '../context/ContactsContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
 import { ReactComponent as UserSVG } from '../assets/user.svg';
 import { ReactComponent as BriefcaseSVG } from '../assets/briefcase.svg';
 import { useEffect, useState } from 'react';
+import { useGlobalDispatch, useGlobalState } from '../context/RootContext';
+import ACTION_TYPES from '../action/actionTypes';
+import { deleteContact, getAllContacts } from '../action';
 
 const initialFilterFormFields = {
   personal: false,
   work: false,
-}
+};
 
 function ContactsList() {
-  const { contacts, deleteContact, isFetchingContacts, setIsFetchingContacts, setContacts, } = useContacts();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [filterFormFields, setFilterFormFields] = useState(initialFilterFormFields);
+  const {
+    contactsState: { contacts, isFetchingContacts },
+  } = useGlobalState();
+  const dispatch = useGlobalDispatch();
 
-  useEffect(function getFetchAllContacts() {
-      setIsFetchingContacts(true);
-      fetch(`http://localhost:4000/contacts?${searchParams.toString()}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setContacts(data);
-          setIsFetchingContacts(false);
-        })
-        .catch((err) => console.log(err.code));
-    },
-    [searchParams]
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [filterFormFields, setFilterFormFields] = useState(
+    initialFilterFormFields
   );
 
-  const changeHandler = (e) => {
+  useEffect(
+    function getFetchAllContacts() {
+      dispatch({ type: ACTION_TYPES.LOADING_CONTACTS });
+      fetch(`http://localhost:4000/contacts?${searchParams.toString()}`)
+        .then(res => res.json())
+        .then(data => {
+          dispatch(
+            getAllContacts({
+              payload: { contacts: data },
+            })
+          );
+        })
+        .catch(err => console.log(err));
+    },
+    [dispatch, searchParams]
+  );
+
+  const changeHandler = e => {
     const { value, checked } = e.target;
-    setFilterFormFields((currFields) => {
+    setFilterFormFields(currFields => {
       return { ...currFields, [value]: checked };
     });
   };
@@ -88,7 +100,11 @@ function ContactsList() {
                   <p style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                     <Link to={`/contacts/edit/${contact.id}`}>Edit</Link>
                     <Link to={`/contacts/${contact.id}`}>View</Link>
-                    <button onClick={() => deleteContact(contact.id)}>
+                    <button
+                      onClick={() =>
+                        dispatch(deleteContact({ payload: { id: contact.id } }))
+                      }
+                    >
                       Delete
                     </button>
                   </p>

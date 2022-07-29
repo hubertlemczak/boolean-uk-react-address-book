@@ -6,59 +6,22 @@
       "street": "41",
       "city": "HARROW",
       "email": "hubertlemczak@gmail.com",
-      "linkedIn": "123",
-      "twitter": "123123123",
-      "type": "work",
-      "id": 1
-    },
-    {
-      "firstName": "Hubert 2",
-      "lastName": "Lemczak",
-      "street": "41",
-      "city": "HARROW",
-      "email": "jaroslawlem02@gmail.com",
-      "linkedIn": "123",
-      "twitter": "123",
+      "linkedIn": "21123",
+      "twitter": "123123",
       "type": "personal",
-      "id": 2
-    }
-  ],
-  "meetings": [
-    {
-      "date": "2022-07-10",
-      "time": "19:47",
-      "description": "1231",
-      "meetingLocation": "12312",
-      "meetingLink": "3123123",
-      "contactId": 2,
-      "id": 1
-    },
-    {
-      "date": "2022-07-07",
-      "time": "17:51",
-      "description": "123",
-      "meetingLocation": "123",
-      "meetingLink": "123",
-      "contactId": 2,
       "id": 3
     },
     {
-      "date": "2022-07-30",
-      "time": "21:58",
-      "description": "fun meeting",
-      "meetingLocation": "123",
-      "meetingLink": "123",
-      "contactId": "2",
+      "firstName": "Hubert",
+      "lastName": "Lemczak",
+      "street": "41",
+      "city": "HARROW",
+      "email": "hubertlemczak@gmail.com",
+      "linkedIn": "asd",
+      "twitter": "asd",
+      "type": "personal",
       "id": 4
-    },
-    {
-      "date": "2022-07-30",
-      "time": "21:58",
-      "description": "fun meeting",
-      "meetingLocation": "123",
-      "meetingLink": "123",
-      "contactId": "2",
-      "id": 5
     }
-  ]
+  ],
+  "meetings": []
 }

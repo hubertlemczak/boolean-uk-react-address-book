@@ -5,7 +5,6 @@ export const useMeetings = () => useContext(MeetingsContext);
 
 export const MeetingsContextProvider = ({ children }) => {
   const [meetings, setMeetings] = useState([]);
-  const [meeting, setMeeting] = useState(false);
   const [isFetchingMeetings, setIsFetchingMeetings] = useState(false);
 
   useEffect(function getFetchAllMeetings() {
@@ -59,8 +58,6 @@ export const MeetingsContextProvider = ({ children }) => {
       value={{
         meetings,
         setMeetings,
-        meeting,
-        setMeeting,
         deleteMeeting,
         isFetchingMeetings,
         postFetchCreateMeeting,
