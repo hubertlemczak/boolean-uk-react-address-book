@@ -5,7 +5,6 @@ import { ReactComponent as BriefcaseSVG } from '../assets/briefcase.svg';
 import { useEffect, useState } from 'react';
 import { useGlobalDispatch, useGlobalState } from '../context/RootContext';
 import ACTION_TYPES from '../action/actionTypes';
-import { deleteContact, getAllContacts } from '../action';
 
 const initialFilterFormFields = {
   personal: false,
@@ -13,9 +12,7 @@ const initialFilterFormFields = {
 };
 
 function ContactsList() {
-  const {
-    contactsState: { contacts, isFetchingContacts },
-  } = useGlobalState();
+  const { contactsState: { contacts, isFetchingContacts }, } = useGlobalState();
   const dispatch = useGlobalDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,21 +20,20 @@ function ContactsList() {
     initialFilterFormFields
   );
 
-  useEffect(
-    function getFetchAllContacts() {
+  useEffect(function getFetchAllContacts() {
       dispatch({ type: ACTION_TYPES.LOADING_CONTACTS });
-      fetch(`http://localhost:4000/contacts?${searchParams.toString()}`)
+      // fetch(`http://localhost:4000/contacts?${searchParams.toString()}`) // fetch from db with filters (slower than filtering state)
+      fetch(`http://localhost:4000/contacts`)
         .then(res => res.json())
         .then(data => {
-          dispatch(
-            getAllContacts({
-              payload: { contacts: data },
-            })
-          );
+          dispatch({
+            type: ACTION_TYPES.GET_ALL_CONTACTS_SUCCESS,
+            payload: { contacts: data },
+          });
         })
         .catch(err => console.log(err));
     },
-    [dispatch, searchParams]
+    [dispatch]
   );
 
   const changeHandler = e => {
@@ -54,6 +50,11 @@ function ContactsList() {
     }
     setSearchParams({ type });
   }, [filterFormFields, setSearchParams]);
+
+  let filtered = [...contacts];
+  if (searchParams.getAll('type').length > 0) {
+    filtered = filtered.filter(contact => searchParams.getAll('type').includes(contact.type));
+  }
 
   const contactType = {
     work: <BriefcaseSVG className="type-svg" />,
@@ -89,7 +90,7 @@ function ContactsList() {
             />
           </form>
           <ul className="contacts-list">
-            {contacts.map((contact, index) => {
+            {filtered.map((contact, index) => {
               const { firstName, lastName } = contact;
               return (
                 <li className="contact" key={index}>
@@ -102,7 +103,10 @@ function ContactsList() {
                     <Link to={`/contacts/${contact.id}`}>View</Link>
                     <button
                       onClick={() =>
-                        dispatch(deleteContact({ payload: { id: contact.id } }))
+                        dispatch({
+                          type: ACTION_TYPES.DELETE_CONTACT,
+                          payload: { id: contact.id },
+                        })
                       }
                     >
                       Delete

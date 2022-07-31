@@ -21,7 +21,28 @@
       "twitter": "asd",
       "type": "personal",
       "id": 4
+    },
+    {
+      "firstName": "Hubert",
+      "lastName": "Lemczak",
+      "street": "41",
+      "city": "HARROW",
+      "email": "hubertlemczak@gmail.com",
+      "linkedIn": "123",
+      "twitter": "123",
+      "type": "work",
+      "id": 5
     }
   ],
-  "meetings": []
+  "meetings": [
+    {
+      "date": "2022-08-05",
+      "time": "20:22",
+      "description": "fun meeting",
+      "meetingLocation": "123",
+      "meetingLink": "123",
+      "contactId": "3",
+      "id": 1
+    }
+  ]
 }

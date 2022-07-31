@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useContacts } from '../context/ContactsContext';
+import ACTION_TYPES from '../action/actionTypes';
+import { useGlobalDispatch } from '../context/RootContext';
 
 const initialUpdateContactFormFields = {
   firstName: '',
@@ -14,36 +15,55 @@ const initialUpdateContactFormFields = {
 };
 
 function ContactsEdit() {
-  const { patchFetchUpdateContact } = useContacts();
-  const [updateContactFormFields, setUpdateContactFormFields] = useState(initialUpdateContactFormFields);
+  const [updateContactFormFields, setUpdateContactFormFields] = useState(
+    initialUpdateContactFormFields
+  );
+  const disptach = useGlobalDispatch();
 
   const navigate = useNavigate();
   const { id } = useParams();
 
-  useEffect(function getFetchContact() {
+  useEffect(
+    function getFetchContact() {
       fetch(`http://localhost:4000/contacts/${id}`)
-        .then((res) => res.json())
-        .then((data) =>
-          setUpdateContactFormFields((currentForm) => ({
+        .then(res => res.json())
+        .then(data =>
+          setUpdateContactFormFields(currentForm => ({
             ...currentForm,
             ...data,
           }))
         )
-        .catch((err) => console.log(err.code));
+        .catch(err => console.log(err.code));
     },
     [id]
   );
 
-  const changeHandler = (e) => {
+  const changeHandler = e => {
     const { name, value } = e.target;
     setUpdateContactFormFields({ ...updateContactFormFields, [name]: value });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     patchFetchUpdateContact(updateContactFormFields);
     setUpdateContactFormFields(initialUpdateContactFormFields);
     navigate('/');
+  };
+
+  const patchFetchUpdateContact = updatedContact => {
+    if (updatedContact != null) {
+      fetch(`http://localhost:4000/contacts/${updatedContact.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedContact),
+      }).catch(err => console.log(err.code));
+      disptach({
+        type: ACTION_TYPES.UPDATE_CONTACT,
+        payload: { user: updatedContact },
+      });
+    }
   };
 
   return (

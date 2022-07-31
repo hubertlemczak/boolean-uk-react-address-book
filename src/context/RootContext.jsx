@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import { rootReducer } from '../reducers/rootReducer';
 
 const StateContext = createContext();
@@ -16,13 +10,15 @@ export const useGlobalDispatch = () => useContext(DispatchContext);
 const initialValue = {
   contactsState: {
     contacts: [],
-    contact: null,
     isFetchingContacts: false,
+    contact: null,
+    isFetchingContact: false,
   },
   meetingsState: {
     meetings: [],
-    meeting: null,
     isFetchingMeetings: false,
+    meeting: null,
+    isFetchingMeeting: false,
   },
 };
 

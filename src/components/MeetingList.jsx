@@ -1,23 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useMeetings } from '../context/MeetingsContext';
+import ACTION_TYPES from '../action/actionTypes';
+import { useGlobalDispatch, useGlobalState } from '../context/RootContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
 export const MeetingList = () => {
-  const { meetings, setMeetings } = useMeetings();
-  const [isFetchingMeetings, setIsFetchingMeetings] = useState(false);
+  const { meetingsState: { meetings, isFetchingMeetings }, } = useGlobalState();
+  const dispatch = useGlobalDispatch();
 
   const { contactId } = useParams();
 
   useEffect(function getFetchMeetings() {
-      setIsFetchingMeetings(true);
+      dispatch({ type: ACTION_TYPES.LOADING_MEETINGS });
       fetch(`http://localhost:4000/meetings?contactId=${contactId}`)
-        .then((res) => res.json())
-        .then((data) => setMeetings(data))
-        .then(() => setIsFetchingMeetings(false))
-        .catch((err) => console.log(err.code));
+        .then(res => res.json())
+        .then(data =>
+          dispatch({
+            type: ACTION_TYPES.GET_ALL_MEETINGS,
+            payload: { meetings: data },
+          })
+        )
+        .catch(err => console.log(err));
     },
-    [contactId, setMeetings]
+    [contactId, dispatch]
   );
 
   return (
@@ -35,7 +40,7 @@ export const MeetingList = () => {
         <LoadingSpinner />
       ) : (
         <ul className="meetings-container">
-          {meetings.map((meeting) => (
+          {meetings.map(meeting => (
             <li key={meeting.id} className="meeting">
               <p>
                 Date: {meeting.date} at {meeting.time}

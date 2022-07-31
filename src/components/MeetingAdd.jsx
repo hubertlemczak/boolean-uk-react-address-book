@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useMeetings } from '../context/MeetingsContext';
+import ACTION_TYPES from '../action/actionTypes';
+import { useGlobalDispatch } from '../context/RootContext';
 
 const initialAddMeetingFormFields = {
   date: '',
@@ -11,22 +12,35 @@ const initialAddMeetingFormFields = {
 };
 
 function MeetingAdd() {
-  const { postFetchCreateMeeting } = useMeetings();
   const [addMeetingFormFields, setAddMeetingFormFields] = useState(initialAddMeetingFormFields);
+  const dispatch = useGlobalDispatch();
 
   const { contactId } = useParams();
   const navigate = useNavigate();
 
-  const changeHandler = (e) => {
+  const changeHandler = e => {
     const { name, value } = e.target;
     setAddMeetingFormFields({ ...addMeetingFormFields, [name]: value });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     postFetchCreateMeeting({ ...addMeetingFormFields, contactId: contactId });
     setAddMeetingFormFields(initialAddMeetingFormFields);
     navigate(`/contacts/${contactId}/meetings`);
+  };
+
+  const postFetchCreateMeeting = newMeeting => {
+    fetch('http://localhost:4000/meetings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newMeeting),
+    })
+      .then(res => res.json())
+      .then(data => dispatch({ type: ACTION_TYPES.ADD_MEETING, payload: { meeting: data } }))
+      .catch(err => console.log(err));
   };
 
   return (

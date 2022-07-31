@@ -1,31 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import ACTION_TYPES from '../action/actionTypes';
 
 import { ReactComponent as LinkedInSVG } from '../assets/linkedin.svg';
 import { ReactComponent as TwitterSVG } from '../assets/twitter.svg';
-import { useContacts } from '../context/ContactsContext';
+import { useGlobalDispatch, useGlobalState } from '../context/RootContext';
 import LoadingSpinner from './spinner/LoadingSpinner';
 
 function ContactsView() {
-  const { contact, setContact } = useContacts();
-  const [isFetchingContact, setIsFetchingContact] = useState(false);
+  const { contactsState: { contact, isFetchingContact }, } = useGlobalState();
+  const dispatch = useGlobalDispatch();
 
   const { id } = useParams();
 
   useEffect(function getFetchContact() {
-      setIsFetchingContact(true);
+      dispatch({ type: ACTION_TYPES.LOADING_CONTACT });
       fetch(`http://localhost:4000/contacts/${id}`)
-        .then((res) => res.json())
-        .then((data) => setContact(data))
-        .then(() => setIsFetchingContact(false))
-        .catch((err) => console.log(err.code));
+        .then(res => res.json())
+        .then(data =>
+          dispatch({
+            type: ACTION_TYPES.SET_CONTACT_SUCCESS,
+            payload: { user: data },
+          })
+        )
+        .catch(err => console.log(err.code));
     },
-    [id, setContact]
+    [id, dispatch]
   );
 
   return (
     <>
-      {isFetchingContact ? (
+      {isFetchingContact || !contact ? (
         <LoadingSpinner />
       ) : (
         <div>

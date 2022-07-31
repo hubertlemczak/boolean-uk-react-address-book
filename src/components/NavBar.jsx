@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useContacts } from '../context/ContactsContext';
+import { useGlobalState } from '../context/RootContext';
 
 export const NavBar = () => {
   const { pathname } = useLocation();
-  const { contact } = useContacts();
+  const {
+    contactsState: { contact },
+  } = useGlobalState();
 
   return (
     <nav>
@@ -15,7 +17,7 @@ export const NavBar = () => {
         <li>
           <Link to="contacts/add">Add New Contact</Link>
         </li>
-        {pathname.match(/\/contacts\/\d{1,99}/) && (
+        {pathname.match(/\/contacts\/\d{1,99}/) && contact && (
           <>
             <li>
               <Link to={`/contacts/${contact.id}/meetings`}>Meetings</Link>

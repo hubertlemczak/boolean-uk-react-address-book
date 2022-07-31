@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContacts } from '../context/ContactsContext';
+import ACTION_TYPES from '../action/actionTypes';
+import { useGlobalDispatch } from '../context/RootContext';
 
 const initialAddContactFormFields = {
   firstName: '',
@@ -14,23 +15,39 @@ const initialAddContactFormFields = {
 };
 
 function ContactsAdd() {
-  const { postFetchCreateContact } = useContacts();
   const [addContactFormFields, setAddContactFormFields] = useState(
     initialAddContactFormFields
   );
 
+  const dispatch = useGlobalDispatch();
+
   const navigate = useNavigate();
 
-  const changeHandler = (e) => {
+  const changeHandler = e => {
     const { name, value } = e.target;
     setAddContactFormFields({ ...addContactFormFields, [name]: value });
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = e => {
     e.preventDefault();
     postFetchCreateContact(addContactFormFields);
     setAddContactFormFields(initialAddContactFormFields);
     navigate('/');
+  };
+
+  const postFetchCreateContact = newContact => {
+    fetch('http://localhost:4000/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newContact),
+    })
+      .then(res => res.json())
+      .then(data =>
+        dispatch({ type: ACTION_TYPES.ADD_CONTACT, payload: { user: data } })
+      )
+      .catch(err => console.log(err));
   };
 
   return (
